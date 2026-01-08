@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -21,16 +22,31 @@ class AreaController extends Controller
      */
     public function create()
     {
-        //
+        return view('areas.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+      
+    public function store(\Illuminate\Http\Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'descripcion' => 'nullable|string|max:255',
+            'activo' => 'required|boolean',
+        ]);
+
+        \App\Models\Area::create([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'activo' => $request->activo,
+        ]);
+
+        return redirect()->route('areas.index');
     }
+
+    
 
     /**
      * Display the specified resource.
